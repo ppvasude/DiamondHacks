@@ -3,6 +3,8 @@
     ec2_access_key: <Your AWS Access Key>
     ec2_secret_key: <Your AWS Secret key>
     key_name: <Your private key name>
+    ansible_ssh_user: <Your ansible ssh user, usually ec2-user for aws>
+    ansible_ssh_private_key_file: <Your priavte key path for ansible to connect to aws>
 
   tasks:
 
@@ -43,6 +45,4 @@
     - name: Add host to [nodes] in inventory file
       lineinfile:
         path: /ansible_srv/inventory
-        line: '{{ec2.instances[0].public_ip}} ansible_ssh_user=ec2-user ansible_ssh_private_key_file=~/.ssh/DevOps-Project-Key'
-  
-    
+        line: '{{ec2.instances[0].public_ip}} ansible_ssh_user={{ansible_ssh_user}} ansible_ssh_private_key_file={{ansible_ssh_private_key_file}}'

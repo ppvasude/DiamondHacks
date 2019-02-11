@@ -1,0 +1,7 @@
+- hosts: localhost
+  tasks:
+  - name: Ansible copy private key of remote server to ~/.ssh/
+    copy:
+      src: <Your path on local to your private key>
+      dest: <Your path onansible VM where aws connection private key will be kept, usually /home/vagrant/.ssh/>
+    become: true  
