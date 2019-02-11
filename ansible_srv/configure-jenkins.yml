@@ -1,0 +1,55 @@
+- hosts: nodes
+  vars:
+    user_pwd: jenkins
+    setmaster_mode: |
+            import jenkins.model.*
+            import hudson.security.*
+            def instance = Jenkins.getInstance()
+            def hudsonRealm = new HudsonPrivateSecurityRealm(false)
+            hudsonRealm.createAccount('jenkins', '${user_pwd}')
+            instance.setSecurityRealm(hudsonRealm)
+            def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
+            strategy.setAllowAnonymousRead(false)
+            instance.setAuthorizationStrategy(strategy)
+            instance.save()
+
+  tasks:
+
+    - name: read admin pwd
+      shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+      register: adminpwd
+      become: true
+
+    - name: unlock and add admin user
+      jenkins_script:
+        script: "{{ setmaster_mode }}"
+        args:
+          user_pwd: "{{ user_pwd }}"
+        user: admin
+        password: "{{ adminpwd.stdout }}"
+
+    - name: complete setup wizard
+      jenkins_script:
+        script: |
+          import static jenkins.model.Jenkins.instance as jenkins
+          import jenkins.install.InstallState
+          if (!jenkins.installState.isSetupComplete()) {
+            InstallState.INITIAL_SETUP_COMPLETED.initializeState()
+          }
+        user: admin
+        password: "{{ adminpwd.stdout }}"
+
+    - name: install plugin
+      jenkins_plugin:
+        name: "{{ item }}"
+        url_username: admin
+        url_password: "{{ adminpwd.stdout }}"
+        validate_certs: false
+        with_dependencies: yes
+      with_items: 
+         - git
+      become: true
+
+    - name: re-start jenkins
+      service: state=restarted name=jenkins
+      become: true     
