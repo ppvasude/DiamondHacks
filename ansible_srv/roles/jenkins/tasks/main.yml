@@ -1,35 +1,46 @@
 ---
-- name: install wget
-  yum:
-    name: wget
-    state: present
-
-- name: install openjdk
-  yum:
-    name: java-1.8.0-openjdk
-    state: present
+- name: Update and upgrade apt packages
   become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+ 
+- name: Install Java 8 openJDK
+  apt: 
+    name: ['openjdk-8-jdk']
+    state: present    
 
-- name: remove java-1.7.0-openjdk
-  yum:
-    name: java-1.7.0-openjdk
-    state: removed
-  become: true  
-
-- name: download jenkins.repo
-  get_url:
-    url: http://pkg.jenkins-ci.org/redhat-stable/jenkins.repo
-    dest: /etc/yum.repos.d/jenkins.repo
+- name: Ensure dependencies are installed.
+  apt:
+    name:
+      - curl
+      - apt-transport-https
+    state: present
 
 - name: import jenkins key
-  rpm_key:
+  apt_key:
     state: present
-    key: https://jenkins-ci.org/redhat/jenkins-ci.org.key
+    url: "https://pkg.jenkins.io/debian-stable/jenkins.io.key"
+
+- name: add jenkins apt repository
+  apt_repository: 
+    repo: "deb http://pkg.jenkins.io/debian-stable binary/"
+    state: present 
+    filename: jenkins 
+    update_cache: yes
+  become: true  
+
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
 
 - name: install jenkins
-  yum:
+  apt:
     name: jenkins
     state: present
+  become: true 
 
 - name: start jenkins
   service: state=started name=jenkins enabled=yes
