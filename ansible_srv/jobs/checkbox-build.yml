@@ -1,0 +1,9 @@
+- job:
+    name: checkbox_build1
+    scm:
+      - git:
+          url: https://github.com/chrisparnin/checkbox.io.git
+          branches:
+            - origin/master
+    builders:
+      - shell: 'npm test'
