@@ -1,0 +1,8 @@
+- job:
+    name: iTrust2
+    project-type: freestyle
+    src: /Project/iTrust2
+    builders:
+      - shell: 'mvn -f pom-data.xml process-test-classes'
+      - shell: 'mvn jetty:run'
+      - shell: 'mvn clean test verify checkstyle:checkstyle'

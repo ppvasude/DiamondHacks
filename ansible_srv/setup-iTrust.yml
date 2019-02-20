@@ -1,0 +1,63 @@
+---
+- hosts: all
+  gather_facts: no
+  become : yes
+  vars :
+    mysql_password : 'qwerty'
+    user_name : 'Devops.project'
+    email : 'csc.dev.2019@gmail.com'
+    email_password : 'Devops@2019'
+    git_user : <git id || unity id>
+    git_password : <unity password>
+  tasks:
+  - name : Update and Upgrade
+    apt :
+      update_cache : yes
+      cache_valid_time : 86400
+      upgrade : yes
+  - name : Install Maven
+    apt :
+      name : maven
+      state : present
+  - name : Install openjdk
+    apt :
+      name : openjdk-8-jdk
+      state : present
+  - name : MySQL set root password
+    debconf :
+      name : mysql-server
+      question : mysql-server/root_password
+      value : '{{mysql_password}}'
+      vtype : password
+  - name : Set password again
+    debconf :
+      name : mysql-server
+      question : mysql-server/root_password_again
+      value : '{{ mysql_password }}'
+      vtype : password
+  - name : Install Mysql
+    apt :
+      name : mysql-server
+      state : present
+  - name : Install Git
+    apt :
+      name : git
+      state : present
+  - name : Clone the repository
+    git : 
+      repo : 'https://{{git_user | urlencode}}:{{git_password | urlencode}}@github.ncsu.edu/engr-csc326-staff/iTrust2-v4'
+      dest : '/Project'
+  - name : Copy db.properties.template
+    template : 
+      src : /ansible_srv/db.properties.template
+      dest : /Project/iTrust2/src/main/java/db.properties
+      force : no
+  - name : Copy email.properties.template
+    template : 
+      src : /ansible_srv/email.properties.template
+      dest : /Project/iTrust2/src/main/java/email.properties
+      force : no
+  - name: Place iTrust-build job file inside /jobs 
+    copy:
+      src: /ansible_srv/jobs/iTrust-build.yml
+      dest: /jobs/   

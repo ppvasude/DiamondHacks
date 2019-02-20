@@ -1,0 +1,4 @@
+from {{user_name}}
+username {{email}} 
+password {{email_password}}
+host smtp.gmail.com
