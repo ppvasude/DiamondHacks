@@ -18,15 +18,12 @@
     - name: update pip
       command: python3 -m pip install --upgrade pip
 
-    - name: install nodejs
+    - name: install nodejs and npm
       apt: 
-        name: ['nodejs']   
+        name: ['nodejs','npm']   
     
-    - name: install npm
-      apt: 
-        name: ['npm']   
-    
-    - pip:
+    - name: Install jenkins-job-builder using pip
+      pip:
         name: jenkins-job-builder 
     
     - name: ansible create directory /etc/jenkins_jobs/
@@ -39,16 +36,16 @@
       changed_when: false
       register: admin_password
 
-    - name: place the password in the jenkins_jobs.ini file
-      lineinfile:
-        path: /ansible_srv/jenkins_jobs.ini
-        line: password={{ admin_password }}
-
     - name: Place jenkins_job.ini to etc/jenkins_jobs directory
       copy:
         src: /ansible_srv/jenkins_jobs.ini
         dest: /etc/jenkins_jobs/
       become: true
+
+    - name: place the password in the jenkins_jobs.ini file
+      lineinfile:
+        path: /etc/jenkins_jobs/jenkins_jobs.ini
+        line: password={{ admin_password.stdout }}  
     
     - name: create jobs directory
       file:
@@ -60,4 +57,13 @@
         src: /ansible_srv/jobs/checkbox-build.yml
         dest: /jobs/
       become: true    
+
+    - name: Clone checkboxio git repo into /home/vagrant/
+      git:
+        repo: 'https://github.com/ppvasude/checkbox.io.git'
+        dest: /home/vagrant/checkboxio/
+        clone: yes
+        update: yes  
+      become: true
+      
 
