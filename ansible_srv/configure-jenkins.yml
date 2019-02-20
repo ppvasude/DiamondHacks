@@ -1,12 +1,13 @@
 - hosts: nodes
   vars:
     user_pwd: jenkins
+    username: jenkins
     setmaster_mode: |
             import jenkins.model.*
             import hudson.security.*
             def instance = Jenkins.getInstance()
             def hudsonRealm = new HudsonPrivateSecurityRealm(false)
-            hudsonRealm.createAccount('jenkins', '${user_pwd}')
+            hudsonRealm.createAccount('${username}', '${user_pwd}')
             instance.setSecurityRealm(hudsonRealm)
             def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
             strategy.setAllowAnonymousRead(false)
@@ -25,6 +26,7 @@
         script: "{{ setmaster_mode }}"
         args:
           user_pwd: "{{ user_pwd }}"
+          username: "{{ username }}"
         user: admin
         password: "{{ adminpwd.stdout }}"
 
