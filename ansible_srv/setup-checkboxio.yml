@@ -4,13 +4,29 @@
   become : yes
   tasks:
   - name : Set environment variables 1
-    shell : export MONGO_PORT=3000
+    lineinfile : 
+      path : /etc/environment
+      state : present
+      regex : 'MONGO_PORT=7000'
+      line : 'MONGO_PORT=7000'
   - name : Set environment variables 2
-    shell : export MONGO_USER=admin
+    lineinfile : 
+      path : /etc/environment
+      state : present
+      regex : 'MONGO_IP=192.168.33.100'
+      line : 'MONGO_IP=192.168.33.100'
   - name : Set environment variables 3
-    shell : export MONGO_IP=192.168.33.100
+    lineinfile : 
+      path : /etc/environment
+      state : present
+      regex : 'MONGO_USER=admin'
+      line : 'MONGO_USER=admin'
   - name : Set environment variables 4
-    shell : export MONGO_PASSWORD=qwerty
+    lineinfile : 
+      path : /etc/environment
+      state : present
+      regex : 'MONGO_PASSWORD=qwerty'
+      line : 'MONGO_PASSWORD=qwerty'
   - name : Install nginx
     apt :
       name : nginx
