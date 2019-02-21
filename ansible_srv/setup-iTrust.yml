@@ -7,8 +7,6 @@
     user_name : 'Devops.project'
     email : 'csc.dev.2019@gmail.com'
     email_password : 'Devops@2019'
-    git_user : <git id || unity id>
-    git_password : <unity password>
   tasks:
   - name : Update and Upgrade
     apt :
@@ -43,21 +41,30 @@
     apt :
       name : git
       state : present
-  - name : Clone the repository
-    git : 
-      repo : 'https://{{git_user | urlencode}}:{{git_password | urlencode}}@github.ncsu.edu/engr-csc326-staff/iTrust2-v4'
-      dest : '/Project'
-  - name : Copy db.properties.template
-    template : 
-      src : /ansible_srv/db.properties.template
-      dest : /Project/iTrust2/src/main/java/db.properties
-      force : no
-  - name : Copy email.properties.template
-    template : 
-      src : /ansible_srv/email.properties.template
-      dest : /Project/iTrust2/src/main/java/email.properties
-      force : no
   - name: Place iTrust-build job file inside /jobs 
     copy:
       src: /ansible_srv/jobs/iTrust-build.yml
-      dest: /jobs/   
+      dest: /jobs/
+  - name : Set up sudo credentials
+    lineinfile : 
+      path : /etc/sudoers
+      state : present
+      regex : 'jenkins ALL=(ALL) NOPASSWD: ALL'
+      line : 'jenkins ALL=(ALL) NOPASSWD: ALL'
+  - name : copy playbooks to jenkins server
+    copy:
+      src : /ansible_srv/jenkins-srv-files
+      dest : /
+  - name : Install Ansible 1
+    apt :
+      name : software-properties-common
+      update_cache : yes
+  - name : Install Ansible 2 
+    apt_repository: 
+      repo: 'ppa:ansible/ansible' 
+      state: present 
+      update_cache: yes
+  - name : Install Ansible 3
+    apt :
+      name : ansible
+      state : present
