@@ -1,9 +1,13 @@
 - job:
-    name: checkbox_build1
+    name: checkbox_build
+    auth-token: testToken
     scm:
       - git:
-          url: https://github.com/chrisparnin/checkbox.io.git
-          branches:
-            - origin/master
+          url: https://github.com/ppvasude/checkbox.io.git
     builders:
-      - shell: 'npm test'
+      - shell: |
+                  cd /var/lib/jenkins/workspace/checkbox_build/server-side/site
+                  npm test  
+    triggers:
+      - pollscm:
+          cron: 'H/15 * * * *'

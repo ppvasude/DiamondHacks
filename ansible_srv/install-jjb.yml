@@ -65,5 +65,20 @@
         clone: yes
         update: yes  
       become: true
-      
+
+    - name: uninstall requests
+      pip: 
+        name: requests
+        state: absent
+    - name: install requests
+      pip:
+        name: requests 
+        state: present    
+
+
+    - name: create jenkins job
+      command: jenkins-jobs update jobs
+      args:
+        chdir: /
+      become: true   
 

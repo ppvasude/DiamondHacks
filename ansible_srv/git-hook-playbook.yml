@@ -1,0 +1,21 @@
+- hosts: nodes
+  gather_facts: false
+  become: true
+  tasks:
+    - command: git init --bare /home/vagrant/bare-checkboxio.git
+      args:
+        creates: /home/vagrant/bare-checkboxio.git/HEAD
+
+    - name: Place post-receive hook file inside bare-repo
+      copy:
+        src: /ansible_srv/post-receive
+        dest: /home/vagrant/bare-checkboxio.git/hooks
+      become: true 
+
+    - name: Changing perm of "post-receive", adding "+x"
+      file: dest=/home/vagrant/bare-checkboxio.git/hooks/post-receive mode=a+x  
+
+    - name: link cloned checkbox.io repo to bare repo
+      command: git remote add jenkins /home/vagrant/bare-checkboxio.git
+      args:
+        chdir: /home/vagrant/checkboxio/
