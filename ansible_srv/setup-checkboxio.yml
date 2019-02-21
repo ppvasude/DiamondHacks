@@ -1,0 +1,60 @@
+---
+- hosts: all
+  gather_facts: no
+  become : yes
+  tasks:
+  - name : Set environment variables 1
+    shell : export MONGO_PORT=3000
+  - name : Set environment variables 2
+    shell : export MONGO_USER=admin
+  - name : Set environment variables 3
+    shell : export MONGO_IP=192.168.33.100
+  - name : Set environment variables 4
+    shell : export MONGO_PASSWORD=qwerty
+  - name : Install nginx
+    apt :
+      name : nginx
+      state : latest
+  - name : Start nginx service
+    service :
+      name : nginx
+      state : started
+  - name : Copy config file
+    template : 
+      src : /ansible_srv/static_site.cfg
+      dest : /etc/nginx/sites-available/static_site.cfg
+      force : no
+  - name: create a symbolic link
+    file:
+      src: /etc/nginx/sites-available/static_site.cfg
+      dest: /etc/nginx/sites-enabled/default
+      state: link
+  - name: restart nginx
+    service:
+      name: nginx
+      state: restarted
+  - name : Import key from MongoDB
+    apt_key :
+      keyserver : hkp://keyserver.ubuntu.com:80
+      id : 0C49F3730359A14518585931BC711F9BA15703C6
+      state : present
+  - name : Add MongoDB repository
+    lineinfile :
+      line : "deb [ arch=amd64,arm64 ] http://repo.mongodb.org/apt/ubuntu xenial/mongodb-org/3.4 multiverse"
+      dest : "/etc/apt/sources.list.d/mongodb-org-3.4.list"
+      state : present
+      create : yes
+  - name : Install MongoDB
+    apt :
+      name : mongodb-org
+      state : present
+      update_cache : yes
+  - name : Start mongodb server
+    systemd : 
+      name : mongod
+      state : started
+      enabled : yes
+  - name: Install pymongo
+    pip :
+      name: pymongo
+      state: present 

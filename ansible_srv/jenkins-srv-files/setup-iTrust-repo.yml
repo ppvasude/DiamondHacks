@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  gather_facts: no
+  become : yes
+  vars:
+    mysql_password : 'qwerty'
+    user_name : 'Devops.project'
+    email : 'csc.dev.2019@gmail.com'
+    email_password : 'Devops@2019'
+  tasks:
+  - name : Clone the repository
+    git : 
+      repo : 'https://github.com/Madhu-Vamsi/iTrust2-v4'
+      dest : '/iTrust/'
+  - name : Copy db.properties.template
+    template : 
+      src : /jenkins-srv-files/db.properties.template
+      dest : /iTrust/iTrust2/src/main/java/db.properties
+      force : no
+      remote_src : yes
+  - name : Copy email.properties.template
+    template : 
+      src : /jenkins-srv-files/email.properties.template
+      dest : /iTrust/iTrust2/src/main/java/email.properties
+      force : no
+      remote_src : yes
+  - name : Copy repo to jenkins workspace
+    command : cp -r /iTrust/iTrust2/. /var/lib/jenkins/workspace/iTrust2/

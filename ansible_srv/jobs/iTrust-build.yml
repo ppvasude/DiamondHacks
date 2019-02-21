@@ -1,8 +1,6 @@
 - job:
     name: iTrust2
-    project-type: freestyle
-    src: /Project/iTrust2
     builders:
-      - shell: 'mvn -f pom-data.xml process-test-classes'
-      - shell: 'mvn jetty:run'
-      - shell: 'mvn clean test verify checkstyle:checkstyle'
+      - shell: 'ansible-playbook /jenkins-srv-files/setup-iTrust-repo.yml -i /jenkins-srv-files/inventory'
+      - shell: 'sudo mvn -f pom-data.xml process-test-classes'
+      - shell: 'sudo mvn clean test verify checkstyle:checkstyle -Djetty.port=9999'
