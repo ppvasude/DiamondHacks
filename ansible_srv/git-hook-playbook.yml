@@ -30,12 +30,12 @@
     - name: Changing perm of "post-receive", adding "+x"
       file: dest=/home/vagrant/bare-itrust.git/hooks/post-receive mode=a+x
 
-    # - name: link cloned checkbox.io repo to bare repo
-    #   command: git remote add jenkins /home/vagrant/bare-checkboxio.git
-    #   args:
-    #     chdir: /home/vagrant/checkboxio/
+    - name: link cloned checkbox.io repo to bare repo
+      command: git remote add jenkins /home/vagrant/bare-checkboxio.git
+      args:
+        chdir: /home/vagrant/checkboxio/
 
     - name: link cloned itrust repo to bare repo
       command: git remote add jenkins /home/vagrant/bare-itrust.git
       args:
-        chdir: /iTrust/
+        chdir: /home/vagrant/iTrust/
