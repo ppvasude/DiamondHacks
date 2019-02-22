@@ -36,8 +36,11 @@ Run the playbook *install-jjb.yml*
 This playbook contains - 
 Installation of **nodejs, npm and Jenkins Job builder**.
 Inorder to build the job, you need to give the credentials in *jenkins_jobs.ini* file so that you get the access to create the build job on jenkins.
+
 There is a jenkins job file placed inside `/jobs` directory - *checkbox-build.yml* which builds the checkbox.io repo by running `npm test` in the *checkbox.io-build-workspace/server-side/site/* directory.
+
 And later the playbook runs `jenkins-jobs update jobs` command to create the build for the job files inside `/jobs` directory.
+
 After running this playbook, go to the browser `http://192.168.33.100:8080` and you can see the build job created once you login - 
 
     ** Screenshot **
