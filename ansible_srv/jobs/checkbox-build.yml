@@ -1,5 +1,5 @@
 - job:
-    name: checkbox_build
+    name: checkboxBuild
     auth-token: testToken
     scm:
       - git:

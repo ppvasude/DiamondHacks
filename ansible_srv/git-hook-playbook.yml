@@ -2,20 +2,40 @@
   gather_facts: false
   become: true
   tasks:
-    - command: git init --bare /home/vagrant/bare-checkboxio.git
+    - name: Create the bare repo for checkbox.io
+      command: git init --bare /home/vagrant/bare-checkboxio.git
       args:
         creates: /home/vagrant/bare-checkboxio.git/HEAD
 
-    - name: Place post-receive hook file inside bare-repo
+    - name: Create the bare repo for iTrust
+      command: git init --bare /home/vagrant/bare-itrust.git
+      args:
+        creates: /home/vagrant/bare-itrust.git/HEAD      
+
+    - name: Place post-receive hook file inside bare-repo - checkbox
       copy:
-        src: /ansible_srv/post-receive
+        src: /ansible_srv/hook-checkbox/post-receive
         dest: /home/vagrant/bare-checkboxio.git/hooks
       become: true 
 
-    - name: Changing perm of "post-receive", adding "+x"
-      file: dest=/home/vagrant/bare-checkboxio.git/hooks/post-receive mode=a+x  
+    - name: Place post-receive hook file inside bare-repo - itrust
+      copy:
+        src: /ansible_srv/hook-itrust/post-receive
+        dest: /home/vagrant/bare-itrust.git/hooks
+      become: true 
 
-    - name: link cloned checkbox.io repo to bare repo
-      command: git remote add jenkins /home/vagrant/bare-checkboxio.git
+    - name: Changing perm of "post-receive", adding "+x"
+      file: dest=/home/vagrant/bare-checkboxio.git/hooks/post-receive mode=a+x 
+
+    - name: Changing perm of "post-receive", adding "+x"
+      file: dest=/home/vagrant/bare-itrust.git/hooks/post-receive mode=a+x
+
+    # - name: link cloned checkbox.io repo to bare repo
+    #   command: git remote add jenkins /home/vagrant/bare-checkboxio.git
+    #   args:
+    #     chdir: /home/vagrant/checkboxio/
+
+    - name: link cloned itrust repo to bare repo
+      command: git remote add jenkins /home/vagrant/bare-itrust.git
       args:
-        chdir: /home/vagrant/checkboxio/
+        chdir: /iTrust/
