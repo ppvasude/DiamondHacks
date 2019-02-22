@@ -1,3 +1,0 @@
----
-- import_playbook: install-jenkins.yml
-- import_playbook: configure-jenkins.yml

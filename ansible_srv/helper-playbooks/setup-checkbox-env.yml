@@ -15,6 +15,12 @@
       state : present
       regex : 'MONGO_IP=127.0.0.1'
       line : 'MONGO_IP=127.0.0.1'
+  - name : Set environment variables 1
+    lineinfile : 
+      path : /etc/environment
+      state : present
+      regex : 'APP_PORT=3002'
+      line : 'APP_PORT=3002'    
   - name : Set environment variables 3
     lineinfile : 
       path : /etc/environment
@@ -37,7 +43,7 @@
       state : started
   - name : Copy config file
     template : 
-      src : /ansible_srv/static_site.cfg
+      src : /ansible_srv/file-templates/static_site.cfg
       dest : /etc/nginx/sites-available/static_site.cfg
       force : no
   - name: create a symbolic link

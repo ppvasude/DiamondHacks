@@ -3,5 +3,5 @@
   gather_facts: false
   become: true
   tasks:
-  - import_role:
-      name: jenkins
+      - import_role:
+            name: /ansible_srv/roles/jenkins

@@ -1,0 +1,39 @@
+- hosts: nodes
+  gather_facts: false
+  become: true
+  tasks:
+    - name: create jobs directory
+      file:
+        path: /jobs
+        state: directory
+      
+    - name: Place checkbox-build job file inside /jobs 
+      copy:
+        src: /ansible_srv/jobs/checkbox-build.yml
+        dest: /jobs/
+      become: true    
+
+    - name: Clone checkboxio git repo into /home/vagrant/
+      git:
+        repo: 'https://github.com/Madhu-Vamsi/checkbox.io.git'
+        dest: /home/vagrant/checkboxio/
+        clone: yes
+        update: yes  
+      become: true
+
+    - name: uninstall requests
+      pip: 
+        name: requests
+        state: absent
+        
+    - name: install requests
+      pip:
+        name: requests 
+        state: present    
+
+
+    - name: create jenkins job
+      command: jenkins-jobs update jobs
+      args:
+        chdir: /
+      become: true   

@@ -15,13 +15,13 @@
       
   - name : Copy db.properties.template
     template : 
-      src : /jenkins-srv-files/db.properties.template
+      src : /file-templates/db.properties.template
       dest : /var/lib/jenkins/workspace/iTrust/iTrust2/src/main/java/db.properties
       force : no
       remote_src : yes
   - name : Copy email.properties.template
     template : 
-      src : /jenkins-srv-files/email.properties.template
+      src : /file-templates/email.properties.template
       dest : /var/lib/jenkins/workspace/iTrust/iTrust2/src/main/java/email.properties
       force : no
       remote_src : yes

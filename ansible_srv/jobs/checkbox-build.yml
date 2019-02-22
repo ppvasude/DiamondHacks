@@ -1,12 +1,13 @@
 - job:
-    name: checkboxBuild
+    name: checkboxio_build
     auth-token: testToken
     scm:
       - git:
-          url: https://github.com/ppvasude/checkbox.io.git
+          url: https://github.com/Madhu-Vamsi/checkbox.io.git
     builders:
       - shell: |
-                  cd /var/lib/jenkins/workspace/checkbox_build/server-side/site
+                  cd /var/lib/jenkins/workspace/checkboxio_build/server-side/site
+                  npm install
                   npm test  
     triggers:
       - pollscm:

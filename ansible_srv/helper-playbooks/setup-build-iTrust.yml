@@ -53,7 +53,7 @@
       line : 'jenkins ALL=(ALL) NOPASSWD: ALL'
   - name : copy playbooks to jenkins server
     copy:
-      src : /ansible_srv/jenkins-srv-files
+      src : /ansible_srv/file-templates
       dest : /
   - name : Install Ansible 1
     apt :
