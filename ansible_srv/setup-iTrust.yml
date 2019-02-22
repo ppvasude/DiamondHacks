@@ -68,3 +68,9 @@
     apt :
       name : ansible
       state : present
+
+  - name: create jenkins job
+    command: jenkins-jobs update jobs
+    args:
+      chdir: /
+    become: true       

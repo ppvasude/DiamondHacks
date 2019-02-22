@@ -13,8 +13,8 @@
     lineinfile : 
       path : /etc/environment
       state : present
-      regex : 'MONGO_IP=192.168.33.100'
-      line : 'MONGO_IP=192.168.33.100'
+      regex : 'MONGO_IP=127.0.0.1'
+      line : 'MONGO_IP=127.0.0.1'
   - name : Set environment variables 3
     lineinfile : 
       path : /etc/environment
@@ -74,3 +74,10 @@
     pip :
       name: pymongo
       state: present 
+
+  - name: Adding mongo db user  
+    mongodb_user:
+      database: admin
+      name: admin
+      password: qwerty
+      state: present
