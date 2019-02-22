@@ -1,5 +1,6 @@
 
 
+
 # DevOps-Project
 ## Setup
 First, clone this repository.
@@ -51,3 +52,15 @@ Click on **`Build now`** and you can see the Build success results -
 ### iTrust
 **  jerry's part  **
 ## Git hook to trigger a build
+Command: `ansible-playbook -i inventory git-hook-playbook.yml`
+
+We have written a playbook `git-hook-playbook.yml` which has all the tasks to create a hook for the iTrust and checkboxio build jobs. This playbook will create the git bare-repositories for the two projects. It links the cloned repositories of the projects to these bare-repositories such that the cloned repo identifies the bare repo as a remote repo. The bare repository has a `post-receive` hook which will be triggered when a person commits something in the project and pushes it using the command `git push jenkins master`.  The cloned projects of iTrust and checkbox.io are in the root directory. You can access this by doing `cd /checkboxio`. Make modification to any build-able file and then follow the steps :
+
+ - `git add -A`
+ - `git commit -m "test git hook"`
+ - `git push jenkins master`
+
+The post-receive hook contains a curl command which triggers the job linked with the git repo in the `url=` parameter.
+
+You should be able to view the automatically triggered build in your [jenkins](http://192.168.33.100:8080/) by logging in using the *admin* user.
+
