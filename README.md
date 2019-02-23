@@ -8,6 +8,8 @@ The following are the team members along with their contribution :
  - Hiral Singadia(hasingad) : Setup checkbox.io build job, Setup Git Hooks.
  - Jeremiah Dsouza(jdsouza) : Setup iTrust build job, Setup checkboxio environment.
  - Madhu Vamsi Kalyan Machavarapu(mmachav) : Setup iTrust build job, Mocha test.
+ 
+ This is the link to our video - [VIDEO LINK](https://drive.google.com/open?id=1tQC8CBofrn2lRM-3XFCTVe1jVk2WVZSe)
 
 ## Setup
 First, clone this repository.
@@ -51,10 +53,15 @@ And later the playbook runs `jenkins-jobs update jobs` command to create the bui
 
 After running this playbook, go to the browser `http://192.168.33.100:8080` and you can see the build job created once you login - 
 
-    ** Screenshot **
+   ![build-jobs](https://media.github.ncsu.edu/user/10648/files/8e16de80-36fd-11e9-9b57-a2b3edbaec3f)
+   
 Click on **`Build now`** and you can see the Build success results - 
 
-    ** Screenshot **
+
+   ![checkbox-build](https://media.github.ncsu.edu/user/10648/files/8eaf7500-36fd-11e9-83b9-709713425e1b)
+   
+   
+![itrust-build](https://media.github.ncsu.edu/user/10648/files/8eaf7500-36fd-11e9-8b51-2e12c3c78c6c)
 
 ### iTrust
 
