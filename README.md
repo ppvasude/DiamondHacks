@@ -7,7 +7,7 @@ The following are the team members along with their contribution :
  - Purva Vasudeo(ppvasude) : Install and Configure Jenkins, Setup Git Hooks, Mocha test.
  - Hiral Singadia(hasingad) : Setup checkbox.io build job, Setup Git Hooks.
  - Jeremiah Dsouza(jdsouza) : Setup iTrust build job, Setup checkboxio environment.
- - Madhu Vamsi(mmachav) : Mocha test.
+ - Madhu Vamsi(mmachav) : Setup iTrust build job, Mocha test.
 
 ## Setup
 First, clone this repository.
