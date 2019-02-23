@@ -146,3 +146,9 @@ The post-receive hook contains a curl command which triggers the job linked with
 
 You should be able to view the automatically triggered build in your [jenkins](http://192.168.33.100:8080/) by logging in using the *admin* user.
 
+## Report - Experiences and Learnings
+
+ - Jenkins Installation : First we set up the jenkins server on AWS, but then quickly realised that we need a compatible AWS image to set up the other following tasks. But this led to rework and wastage of time. So the learning here is do a complete analysis on all tasks and their compatibility issues before starting one.
+ - We spent a lot of time trying to reasearch on setting up builds using JenkinsFile. After we saw alternate options, we realised Jenkins-Job Builder was quicker and easier to set up so we went ahead with that.
+ - For the mocha test, we had to figure out compatible modules for headless tests. We also worked on setting up appropriate tests to test the api plus the static UI content. Main learning here was understanding the different dependencies and how crucial module versions are with each others compatibility.
+
