@@ -67,14 +67,34 @@ We also require to install the following dependencies:
  - Git (to clone the repositories)
  - Ansible (to run the playbook that will update the template files in iTrust)
 
-We will install the above dependencies using an ansible playbook that automates the entire process. To do this, we have to run the playbook `setup-build-iTrust.yml` located inside the `/ansible_srv/helper-playbooks` directory. We run the following commands using this playbook and the inventory file which contains the host we want to run these plays(task) on:
-
+We will install the above dependencies using an ansible playbook that automates the entire process. To do this, we have to run the playbook `setup-build-iTrust.yml` located inside the `/ansible_srv/helper-playbooks` directory. First we will have to edit the file and add in a password for the MySQL database. Open the playbook using the following command:
 ```
 cd /ansible_srv/
+sudo vi helper-playbooks/setup-build-iTrust.yml
+```
+Edit the following line to include a password of your choice.
+```
+mysql_password : <mysql password>
+```
+Exit and save the file. \\
+Next we run the following commands using this playbook and the inventory file which contains the host we want to run these plays(task) on:
+```
 ansible-playbook helper-playbooks/setup-build-iTrust.yml -i inventory
 ```
-
 This playbook will first ensure Java is installed on the system. It will then install MySQL and create the root user and password. Next it will install the other dependencies required and finally it will edit the `/etc/sudoers` file to ensure jenkins has root privileges to run the build commands. We then create a jenkins job on our jenkins server using the Jenkins Job Builder file `iTrust-build.yml` located inside the `/ansible_srv/jobs` folder. We provide the job with a name and a git url to clone. Next we include the shell commands that should be run inorder to successfully build iTrust.
+
+Next we need to edit the `setup-iTrust-repo.yml` file located inside the `/ansible_srv/helper-playbooks` directory and add our email credentials for SMTP to work. This file will be run by Jenkins when it will build iTrust and hence we need to configure these changes first itself. Open the playbook using the following command:
+```
+sudo vi helper-playbooks/setup-iTrust-repo.yml
+```
+Edit the following lines to include your MySQL password set above, email username, email id and password of your gmail account.
+```
+mysql_password : <mysql password>
+user_name : <email username>
+email : <gmail email_id || something@gmail.com>
+email_password : <email password>
+```
+Exit and save the file. 
 
 Shell commands in JJB file :
  - **ansible-playbook /jenkins-srv-files/setup-iTrust-repo.yml -i /jenkins-srv-files/inventory** :
@@ -88,6 +108,8 @@ Shell commands in JJB file :
 
 After running this playbook, go to the browser `http://192.168.33.100:8080` and you can see the build job created once you login: 
 
+**Ensure all firewall and anti-virus setting are turned off before building and you have enabled less secure app access on your gmail account**
+
 Click on **`Build now`** and you can see the Build success results - 
 
 ## npm test for Checkbox.io 
@@ -98,6 +120,7 @@ We have succeffully built checkbox.io, but now we need to check that the server 
 cd /ansible_srv
 ansible-playbook helper-playbooks/setup-checkboxio.yml -i inventory
 ```
+
 This playbook will first set up the required environment variables required for our server to communicate with our database. Next we will install and configure nginx server. Lastly, we will install mongodb on the target host and add the admin user to the database. 
 
 **A good practice would be refreshing your terminal (logging out and back in) to ensure the environmental variables are successfully set**
@@ -108,6 +131,8 @@ The test script responsible for testing the server is test_server.js located und
 The script has 2 tests:
  - One checks for static webpage using mocha, chai and got modules.
  - The other test checks for the api using "supertest" module (supertest module is high-level abstraction for testing HTTP).
+
+![npm test](images\npm_test.jpeg)
 
 
 ## Git hook to trigger a build
