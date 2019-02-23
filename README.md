@@ -76,7 +76,8 @@ Edit the following line to include a password of your choice.
 ```
 mysql_password : <mysql password>
 ```
-Exit and save the file. \\
+Exit and save the file.
+
 Next we run the following commands using this playbook and the inventory file which contains the host we want to run these plays(task) on:
 ```
 ansible-playbook helper-playbooks/setup-build-iTrust.yml -i inventory
@@ -131,9 +132,6 @@ The test script responsible for testing the server is test_server.js located und
 The script has 2 tests:
  - One checks for static webpage using mocha, chai and got modules.
  - The other test checks for the api using "supertest" module (supertest module is high-level abstraction for testing HTTP).
-
-![npm test](images\npm_test.jpeg)
-
 
 ## Git hook to trigger a build
 Command: `ansible-playbook -i inventory git-hook-playbook.yml`
