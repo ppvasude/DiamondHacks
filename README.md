@@ -87,7 +87,7 @@ Exit and save the file.
 
 Next we run the following commands using this playbook and the inventory file which contains the host we want to run these plays(task) on:
 ```
-ansible-playbook helper-playbooks/setup-build-iTrust.yml -i inventory
+ansible-playbook -i inventory build-apps.yml
 ```
 This playbook will first ensure Java is installed on the system. It will then install MySQL and create the root user and password. Next it will install the other dependencies required and finally it will edit the `/etc/sudoers` file to ensure jenkins has root privileges to run the build commands. We then create a jenkins job on our jenkins server using the Jenkins Job Builder file `iTrust-build.yml` located inside the `/ansible_srv/jobs` folder. We provide the job with a name and a git url to clone. Next we include the shell commands that should be run inorder to successfully build iTrust.
 
@@ -126,7 +126,7 @@ We have succeffully built checkbox.io, but now we need to check that the server 
 
 ```
 cd /ansible_srv
-ansible-playbook helper-playbooks/setup-checkboxio.yml -i inventory
+ansible-playbook -i inventory build-apps.yml
 ```
 
 This playbook will first set up the required environment variables required for our server to communicate with our database. Next we will install and configure nginx server. Lastly, we will install mongodb on the target host and add the admin user to the database. 
@@ -143,7 +143,7 @@ The script has 2 tests:
 ## Git hook to trigger a build
 Command: `ansible-playbook -i inventory git-hook-playbook.yml`
 
-We have written a playbook `git-hook-playbook.yml` which has all the tasks to create a hook for the iTrust and checkboxio build jobs. This playbook will create the git bare-repositories for the two projects. It links the cloned repositories of the projects to these bare-repositories such that the cloned repo identifies the bare repo as a remote repo. The bare repository has a `post-receive` hook which will be triggered when a person commits something in the project and pushes it using the command `git push jenkins master`.  The cloned projects of iTrust and checkbox.io are in the root directory. You can access this by doing `cd /checkboxio`. Make modification to any file and then follow the steps :
+We have written a playbook `git-hook-playbook.yml` which has all the tasks to create a hook for the iTrust and checkboxio build jobs. This playbook will create the git bare-repositories for the two projects. It links the cloned repositories of the projects to these bare-repositories such that the cloned repo identifies the bare repo as a remote repo. The bare repository has a `post-receive` hook which will be triggered when a person commits something in the project and pushes it using the command `git push jenkins master`.  The cloned projects of iTrust and checkbox.io are in the root directory. You can access this by doing `cd /home/vagrant/checkboxio` or `cd /home/vagrant/iTrust`. Make modification to any file and then follow the steps :
 
  - `git add -A`
  - `git commit -m "test git hook"`
