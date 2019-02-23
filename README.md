@@ -60,14 +60,14 @@ We also require to install the following dependencies:
  - Git (to clone the repositories)
  - Ansible (to run the playbook that will update the template files in iTrust)
 
-We will install the above dependencies using an ansible playbook that automates the entire process. To do this, we have to run the playbook *setup-iTrust.yml* located inside the **/ansible_srv/** directory. We run the following commands using this playbook and the inventory file which contains the host we want to run these plays(task) on:
+We will install the above dependencies using an ansible playbook that automates the entire process. To do this, we have to run the playbook `setup-build-iTrust.yml` located inside the `/ansible_srv/helper-playbooks` directory. We run the following commands using this playbook and the inventory file which contains the host we want to run these plays(task) on:
 
 ```
-cd /ansible_srv
-ansible-playbook setup-iTrust.yml -i inventory
+cd /ansible_srv/
+ansible-playbook helper-playbooks/setup-build-iTrust.yml -i inventory
 ```
 
-This playbook will first ensure Java is installed on the system. It will then install MySQL and create the root user and password. Next it will install the other dependencies required and finally it will edit the **/etc/sudoers** file to ensure jenkins has root privileges to run the build commands. We then create a jenkins job on our jenkins server using the Jenkins Job Builder file **iTrust-build.yml** located inside the **/ansible_srv/jobs** folder. We provide the job with a name and a git url to clone. Next we include the shell commands that should be run inorder to successfully build iTrust.
+This playbook will first ensure Java is installed on the system. It will then install MySQL and create the root user and password. Next it will install the other dependencies required and finally it will edit the `/etc/sudoers` file to ensure jenkins has root privileges to run the build commands. We then create a jenkins job on our jenkins server using the Jenkins Job Builder file `iTrust-build.yml` located inside the `/ansible_srv/jobs` folder. We provide the job with a name and a git url to clone. Next we include the shell commands that should be run inorder to successfully build iTrust.
 
 Shell commands in JJB file :
  - **ansible-playbook /jenkins-srv-files/setup-iTrust-repo.yml -i /jenkins-srv-files/inventory** :
@@ -85,11 +85,11 @@ Click on **`Build now`** and you can see the Build success results -
 
 ## npm test for Checkbox.io 
 
-We have succeffully built checkbox.io, but now we need to check that the server is actually running. In order to do that, we will first need to set up our server. To do this we will run the playbook *setup-checkboxio.yml* located inside the **/ansible_srv/** directory. We run the following commands using this playbook and the inventory file which contains the host we want to run these plays(task) on:
+We have succeffully built checkbox.io, but now we need to check that the server is actually running. In order to do that, we will first need to set up our server. To do this we will run the playbook `setup-checkbox-env.yml` located inside the `/ansible_srv/helper-playbooks` directory. We run the following commands using this playbook and the inventory file which contains the host we want to run these plays(task) on:
 
 ```
 cd /ansible_srv
-ansible-playbook setup-checkboxio.yml -i inventory
+ansible-playbook helper-playbooks/setup-checkboxio.yml -i inventory
 ```
 This playbook will first set up the required environment variables required for our server to communicate with our database. Next we will install and configure nginx server. Lastly, we will install mongodb on the target host and add the admin user to the database. 
 

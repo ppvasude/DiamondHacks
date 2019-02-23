@@ -3,10 +3,10 @@
   gather_facts: no
   become : yes
   vars:
-    mysql_password : 'qwerty'
-    user_name : 'Devops.project'
-    email : 'csc.dev.2019@gmail.com'
-    email_password : 'Devops@2019'
+    mysql_password : <mysql password>
+    user_name : <email username>
+    email : <google email_id || something@gmail.com>
+    email_password : <email password>
   tasks:
   - name : Clone the repository
     git : 

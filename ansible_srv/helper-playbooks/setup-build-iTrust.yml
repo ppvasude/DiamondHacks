@@ -3,10 +3,7 @@
   gather_facts: no
   become : yes
   vars :
-    mysql_password : 'qwerty'
-    user_name : 'Devops.project'
-    email : 'csc.dev.2019@gmail.com'
-    email_password : 'Devops@2019'
+    mysql_password : <mysql password>
   tasks:
   - name : Update and Upgrade
     apt :
@@ -55,20 +52,19 @@
     copy:
       src : /ansible_srv/file-templates
       dest : /
-  - name : Install Ansible 1
+  - name : Install software-properties-common that allows us to work easily with ppa
     apt :
       name : software-properties-common
       update_cache : yes
-  - name : Install Ansible 2 
+  - name : Configure ansible ppa to the system
     apt_repository: 
       repo: 'ppa:ansible/ansible' 
       state: present 
       update_cache: yes
-  - name : Install Ansible 3
+  - name : Install Ansible
     apt :
       name : ansible
       state : present
-
   - name: create jenkins job
     command: jenkins-jobs update jobs
     args:
