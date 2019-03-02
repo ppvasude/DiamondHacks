@@ -38,10 +38,10 @@ public class MainClass {
 		JSONObject obj = new JSONObject(jsonString);
 		String func = obj.getString("function");
 		
-		if(obj.has("environment_variables")){
+		if(obj.has("environment")){
 			callScript("envvars");
 		}
-				
+		
 		if("setupJenkins".equals(func)) {
 			callScript("jenkins");
 		}
@@ -57,6 +57,10 @@ public class MainClass {
 			
 			callScript(appType);
 			System.out.println("Calling New callScript() : "+appType);
+		}
+		
+		if(obj.has("job")) {
+			callScript("job");
 		}
 		
 	}
