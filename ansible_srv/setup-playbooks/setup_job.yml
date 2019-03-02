@@ -1,0 +1,31 @@
+- hosts: nodes
+  gather_facts: false
+  become: true
+  tasks:
+    - name: create jobs directory
+      file:
+        path: /jobs
+        state: directory
+      
+    - name: Place build job file inside /jobs 
+      copy:
+        src: /ansible_srv/jobs/general_build_job.yml
+        dest: /jobs/
+      become: true    
+
+    - name: uninstall requests
+      pip: 
+        name: requests
+        state: absent
+        
+    - name: install requests
+      pip:
+        name: requests 
+        state: present    
+
+
+    - name: create jenkins job
+      command: jenkins-jobs update jobs
+      args:
+        chdir: /
+      become: true   
