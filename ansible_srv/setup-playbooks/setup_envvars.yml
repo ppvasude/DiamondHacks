@@ -1,0 +1,15 @@
+---
+- hosts: jenkins
+  gather_facts: no
+  become : yes
+  tasks:
+  - name: Bare include (free-form)
+    include_vars: environment_vars.yml
+
+  - name : Set environment variables
+    lineinfile : 
+      path : /etc/environment
+      state : present
+      regex : '{{item}}'
+      line : '{{item}}'
+    with_items: "{{ env }}"

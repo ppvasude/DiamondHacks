@@ -7,19 +7,11 @@
         path: /jobs
         state: directory
       
-    - name: Place checkbox-build job file inside /jobs 
+    - name: Place build job file inside /jobs 
       copy:
-        src: /ansible_srv/jobs/checkbox-build.yml
+        src: /ansible_srv/jobs/build.yml
         dest: /jobs/
       become: true    
-
-    - name: Clone checkboxio git repo into /home/vagrant/
-      git:
-        repo: 'https://github.com/Madhu-Vamsi/checkbox.io.git'
-        dest: /home/vagrant/checkboxio/
-        clone: yes
-        update: yes  
-      become: true
 
     - name: uninstall requests
       pip: 

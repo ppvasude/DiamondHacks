@@ -43,7 +43,8 @@ Vagrant.configure("2") do |config|
   # the path on the host to the actual folder. The second argument is
   # the path on the guest to mount the folder. And the optional third
   # argument is a set of non-required options.
-   config.vm.synced_folder "<Your local ansible_srv paths>", "/ansible_srv"
+   config.vm.synced_folder "C:/Users/Purva/Desktop/MS/Sem 2/DevOps/DevOps-Project/ansible_srv", "/ansible_srv"
+   config.vm.synced_folder "C:/Users/Purva/Desktop/MS/DiamondHacks", "/DiamondHacks"
    config.vm.provider :virtualbox do |vb|
      # fix crappy dns
      # https://serverfault.com/questions/453185/vagrant-virtualbox-dns-10-0-2-3-not-working
@@ -86,6 +87,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.define :control do |machine|
 
-    machine.vm.synced_folder '<Your private_key path>', '/ssh', mount_options: ["dmode=775,fmode=600"]
+    machine.vm.synced_folder 'C:/Users/Purva/Desktop/MS/Sem 2/DevOps/DevOps-Project/web_srv/.vagrant/machines/default/virtualbox', '/ssh', mount_options: ["dmode=775,fmode=600"]
   end  
 end

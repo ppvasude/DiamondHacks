@@ -1,1 +1,0 @@
-curl http://127.0.0.1:8080/git/notifyCommit?url=https://github.com/Madhu-Vamsi/iTrust2-v4

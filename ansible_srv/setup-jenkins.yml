@@ -1,3 +1,0 @@
----
-- include:  helper-playbooks/install-jenkins.yml
-- include:  helper-playbooks/configure-jenkins.yml
