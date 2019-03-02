@@ -1,0 +1,7 @@
+- name: Install Jenkins
+  hosts: nodes
+  gather_facts: false
+  become: true
+  tasks:
+      - import_role:
+            name: /ansible_srv/roles/jenkins

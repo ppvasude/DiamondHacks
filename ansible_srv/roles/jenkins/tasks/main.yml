@@ -1,0 +1,60 @@
+---
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+ 
+- name: Install Java 8 openJDK
+  apt: 
+    name: ['openjdk-8-jdk']
+    state: present    
+
+- name: Ensure dependencies are installed.
+  apt:
+    name:
+      - curl
+      - apt-transport-https
+    state: present
+
+- name: import jenkins key
+  apt_key:
+    state: present
+    url: "https://pkg.jenkins.io/debian-stable/jenkins.io.key"
+
+- name: add jenkins apt repository
+  apt_repository: 
+    repo: "deb http://pkg.jenkins.io/debian-stable binary/"
+    state: present 
+    filename: jenkins 
+    update_cache: yes
+  become: true  
+
+- name: Update and upgrade apt packages
+  become: true
+  apt:
+    upgrade: yes
+    update_cache: yes
+
+- name: install jenkins
+  apt:
+    name: jenkins
+    state: present
+  become: true 
+
+- name: start jenkins
+  service: state=started name=jenkins enabled=yes
+  become: true
+
+- name: sleep for 30 seconds and continue with play
+  wait_for: timeout=30
+  delegate_to: localhost  
+
+- name: init password jenkin
+  shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+  changed_when: false
+  register: result
+
+- name: print init password jenkins
+  debug:
+    var: result.stdout

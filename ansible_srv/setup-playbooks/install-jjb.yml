@@ -1,0 +1,46 @@
+- hosts: nodes
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Update and upgrade apt packages
+      become: true
+      apt:
+        upgrade: yes
+        update_cache: yes
+        
+    - name: Install pip
+      apt:
+        name: python3-pip
+        update_cache: yes
+        state: present
+      become: true
+
+    - name: update pip
+      command: python3 -m pip install --upgrade pip      
+    
+    - name: Install jenkins-job-builder using pip
+      pip:
+        name: jenkins-job-builder 
+    
+    - name: ansible create directory /etc/jenkins_jobs/
+      file:
+        path: /etc/jenkins_jobs/
+        state: directory
+
+    - name: init password jenkin
+      shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+      changed_when: false
+      register: admin_password
+
+    - name: Place jenkins_job.ini to etc/jenkins_jobs directory
+      copy:
+        src: /ansible_srv/file-templates/jenkins_jobs.ini
+        dest: /etc/jenkins_jobs/
+      become: true
+
+    - name: place the password in the jenkins_jobs.ini file
+      lineinfile:
+        path: /etc/jenkins_jobs/jenkins_jobs.ini
+        line: password={{ admin_password.stdout }}  
+    
+    

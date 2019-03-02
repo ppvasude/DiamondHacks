@@ -1,0 +1,7 @@
+- hosts: localhost
+  tasks:
+  - name: Ansible copy private key of remote server to ~/.ssh/
+    copy:
+      src: /ssh/private_key
+      dest: /home/vagrant/.ssh/
+    become: true  
