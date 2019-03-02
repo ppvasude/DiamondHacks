@@ -1,0 +1,3 @@
+jobName: checkboxio_build
+gitUrl: https://github.com/Madhu-Vamsi/checkbox.io.git
+buildPath: /server-side/site

@@ -1,5 +1,5 @@
 {
-"function": "buildApps",
+"dependency": ["mongodb"],
 "app-type": "nodejs",
 "vars": 
 	  {"mongodb":
@@ -14,7 +14,6 @@
 	{
 		"gitUrl": "https://github.com/Madhu-Vamsi/checkbox.io.git",
 		"jobName": "checkboxio_build",
-		"buildPath": "/server-side/site"
+		"buildPath": "/server-side/path"
 	}
-
 }

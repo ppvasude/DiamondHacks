@@ -2,6 +2,9 @@
   gather_facts: false
   become: true
   tasks:
+    - name: Include job_vars.yml vars file
+      include_vars: job_vars.yml
+
     - name: create jobs directory
       file:
         path: /jobs
@@ -9,9 +12,18 @@
       
     - name: Place build job file inside /jobs 
       copy:
-        src: /ansible_srv/jobs/general_build_job.yml
+        src: /ansible_srv/setup-playbooks/jobs/general_build_job.yml
         dest: /jobs/
       become: true    
+
+    - name: Set job name in job file
+      replace: dest=/jobs/general_build_job.yml regexp='job_name' replace='{{jobName}}' backup=yes
+       
+    - name: Set git url in job file
+      replace: dest=/jobs/general_build_job.yml regexp='git_url' replace='{{gitUrl}}' backup=yes
+
+    - name: Set buildPath in job file
+      replace: dest=/jobs/general_build_job.yml regexp='build_path' replace='{{buildPath}}' backup=yes        
 
     - name: uninstall requests
       pip: 

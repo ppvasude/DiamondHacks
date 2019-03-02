@@ -44,7 +44,7 @@
     - name: install git plugin
       jenkins_plugin:
         name: "{{ item }}"
-        url_user: admin
+        url_username: admin
         url_password: "{{ adminpwd.stdout }}"
         validate_certs: false
         with_dependencies: yes

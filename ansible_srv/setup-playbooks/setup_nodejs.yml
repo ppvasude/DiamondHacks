@@ -3,12 +3,12 @@
   become: true
   tasks:
     - name: install nodejs and npm
-        apt: 
-          name: ['nodejs','npm','nodejs-legacy']  
+      apt: 
+        name: ['nodejs','npm','nodejs-legacy']  
     
-      - name: Updating node
-        shell: |
-                  npm cache clean -f
-                  npm install -g n
-                  n stable
-        become: true 
+    - name: Updating node
+      shell: |
+                npm cache clean -f
+                npm install -g n
+                n stable
+      become: true 
