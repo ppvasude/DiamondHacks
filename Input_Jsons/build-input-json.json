@@ -1,0 +1,18 @@
+{
+"function": "buildApps",
+"dependency": ["mongodb"],
+"type": "nodejs",
+"vars": {
+	"mongodb":
+	{
+		"user": "admin",
+		"password": "qwerty",
+		"mongoPort": "7000",
+		"mongoIp": "127.0.0.1"
+	}
+},
+"environmentVars": ["MONGO_PORT=7000","MONGO_IP=127.0.0.1","APP_PORT=3002","MONGO_USER=admin","MONGO_PASSWORD=qwerty"],
+
+"gitUrl": "https://github.com/Madhu-Vamsi/checkbox.io.git"
+
+}

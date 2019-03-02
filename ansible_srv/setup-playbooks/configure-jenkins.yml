@@ -1,13 +1,11 @@
 - hosts: nodes
   vars:
-    user_pwd: jenkins
-    username: jenkins
     setmaster_mode: |
             import jenkins.model.*
             import hudson.security.*
             def instance = Jenkins.getInstance()
             def hudsonRealm = new HudsonPrivateSecurityRealm(false)
-            hudsonRealm.createAccount('${username}', '${user_pwd}')
+            hudsonRealm.createAccount('${user}', '${password}')
             instance.setSecurityRealm(hudsonRealm)
             def strategy = new FullControlOnceLoggedInAuthorizationStrategy()
             strategy.setAllowAnonymousRead(false)
@@ -15,6 +13,8 @@
             instance.save()
 
   tasks:
+    - name: Include jenkins_vars.yml vars file
+      include_vars: jenkins_vars.yml
 
     - name: read admin pwd
       shell: cat /var/lib/jenkins/secrets/initialAdminPassword
@@ -25,8 +25,8 @@
       jenkins_script:
         script: "{{ setmaster_mode }}"
         args:
-          user_pwd: "{{ user_pwd }}"
-          username: "{{ username }}"
+          password: "{{ password }}"
+          user: "{{ user }}"
         user: admin
         password: "{{ adminpwd.stdout }}"
 
@@ -39,50 +39,12 @@
             InstallState.INITIAL_SETUP_COMPLETED.initializeState()
           }
         user: admin
-        password: "{{ adminpwd.stdout }}"
+        password: "{{ adminpwd.stdout }}"   
 
-    - name: set global environment variables on jenkins
-      jenkins_script:
-        script: |
-          import hudson.EnvVars;
-          import hudson.slaves.EnvironmentVariablesNodeProperty;
-          import hudson.slaves.NodeProperty;
-          import hudson.slaves.NodePropertyDescriptor;
-          import hudson.util.DescribableList;
-          import jenkins.model.Jenkins;
-
-          public createGlobalEnvironmentVariables(String key, String value){
-
-                  Jenkins instance = Jenkins.getInstance();
-
-                  DescribableList<NodeProperty<?>, NodePropertyDescriptor> globalNodeProperties = instance.getGlobalNodeProperties();
-                  List<EnvironmentVariablesNodeProperty> envVarsNodePropertyList = globalNodeProperties.getAll(EnvironmentVariablesNodeProperty.class);
-
-                  EnvironmentVariablesNodeProperty newEnvVarsNodeProperty = null;
-                  EnvVars envVars = null;
-
-                  if ( envVarsNodePropertyList == null || envVarsNodePropertyList.size() == 0 ) {
-                      newEnvVarsNodeProperty = new hudson.slaves.EnvironmentVariablesNodeProperty();
-                      globalNodeProperties.add(newEnvVarsNodeProperty);
-                      envVars = newEnvVarsNodeProperty.getEnvVars();
-                  } else {
-                      envVars = envVarsNodePropertyList.get(0).getEnvVars();
-                  }
-                  envVars.put(key, value)
-                  instance.save()
-          } 
-          createGlobalEnvironmentVariables('MONGO_PORT','7000')
-          createGlobalEnvironmentVariables('MONGO_IP','localhost')
-          createGlobalEnvironmentVariables('MONGO_USER','admin')
-          createGlobalEnvironmentVariables('MONGO_PASSWORD','qwerty')
-          createGlobalEnvironmentVariables('APP_PORT','3002')   
-        user: admin
-        password: "{{ adminpwd.stdout }}"    
-
-    - name: install plugin
+    - name: install git plugin
       jenkins_plugin:
         name: "{{ item }}"
-        url_username: admin
+        url_user: admin
         url_password: "{{ adminpwd.stdout }}"
         validate_certs: false
         with_dependencies: yes

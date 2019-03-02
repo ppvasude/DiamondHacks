@@ -3,6 +3,9 @@
   gather_facts: no
   become : yes
   tasks:
+  - name: Include mongodb_vars.yml vars file
+    include_vars: mongodb_vars.yml
+
   - name : Import key from MongoDB
     apt_key :
       keyserver : hkp://keyserver.ubuntu.com:80
@@ -36,6 +39,6 @@
   - name: Adding mongo db user  
     mongodb_user:
       database: admin
-      name: admin
-      password: qwerty
+      name: '{{user}}'
+      password: '{{password}}'
       state: present

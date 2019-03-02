@@ -3,7 +3,7 @@
   gather_facts: no
   become : yes
   tasks:
-  - name: Bare include (free-form)
+  - name: Include environment_vars.yml vars file
     include_vars: environment_vars.yml
 
   - name : Set environment variables

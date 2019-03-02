@@ -1,0 +1,11 @@
+{
+"function": "setupJenkins",
+"vars": {
+	"jenkins":
+	{
+		"user": "jenkins",
+		"password": "jenkins"
+	}
+}
+
+}
