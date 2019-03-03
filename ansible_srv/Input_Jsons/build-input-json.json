@@ -1,14 +1,15 @@
 {
 "function": "buildApps",
 "dependency": ["mongodb"],
-"app-type": "nodejs",
-"vars": 
+"type": "nodejs",
+"vars":
 	  {"mongodb":
     	{
     		"user": "admin",
     		"password": "qwerty"
     	}
 	  }
+
 ,
 "environment": ["MONGO_PORT=7000","MONGO_IP=127.0.0.1","APP_PORT=3002","MONGO_USER=admin","MONGO_PASSWORD=qwerty"],
 "job":

@@ -37,7 +37,7 @@
 
 
     - name: create jenkins job
-      command: jenkins-jobs update jobs
+      command: jenkins-jobs update /jobs
       args:
         chdir: /
       become: true   

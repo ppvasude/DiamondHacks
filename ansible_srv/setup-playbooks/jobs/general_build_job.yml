@@ -1,6 +1,6 @@
 - job:
     name: job_name
-    auth-token: testToken
+    auth-token: testToken1
     scm:
       - git:
           url: git_url
